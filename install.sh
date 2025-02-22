@@ -1,16 +1,16 @@
 #!/bin/bash
 
 # Display the ASCII Art logo
-echo "███████╗ ██████╗ ██╗ ██████╗ ██████╗ ██╗ █████╗ ██╗ ██╗███████╗"
-echo "██╔════╝██╔═══██╗██║ ██╔═══██╗██╔══██╗██║ ██╔══██╗╚██╗ ██╔╝╚══███╔╝"
-echo "███████╗██║ ██║██║ ██║ ██║██████╔╝██║ ███████║ ╚████╔╝ ███╔╝ "
-echo "╚════██║██║ ██║██║ ██║ ██║██╔═══╝ ██║ ██╔══██║ ╚██╔╝ ███╔╝ "
-echo "███████║╚██████╔╝███████╗╚██████╔╝██║ ███████╗██║ ██║ ██║ ███████╗"
-echo "╚══════╝ ╚═════╝ ╚══════╝ ╚═════╝ ╚═╝ ╚══════╝╚═╝ ╚═╝ ╚═╝ ╚══════╝"
+echo "██████╗ ██╗██╗ ██╗██╗ █████╗ ██╗ ██╗ ███████╗██╗ ██╗ ██╗ ██╗"
+echo "██╔══██╗██║██║ ██║██║██╔══██╗██║ ██║██╔════╝██║ ██║██║ ██║██║"
+echo "██████╔╝██║██║ ██║██║███████║███████║███████╗███████║██║ ██║██║"
+echo "██╔═══╝ ██║╚██╗██╔╝██║██╔══██║██╔══██║╚════██║██╔══██║██║ ██║██║"
+echo "██║ ██║ ╚████╔╝ ██║██║ ██║██║ ██║███████║██║ ██║╚█████╔╝██║"
+echo "╚═╝ ╚═╝  ╚═══╝  ╚═╝╚═╝ ╚═╝╚═╝ ╚═╝╚══════╝╚═╝ ╚═╝ ╚════╝ ╚═╝"
 echo ""
 
 # Install necessary dependencies
-echo "Installing necessary dependencies...Follow Divyanshu08 on GitHub!"
+echo "Installing necessary dependencies..."
 
 # Step 1: Create keyring directory
 sudo mkdir -p /etc/apt/keyrings
@@ -45,4 +45,4 @@ npm run createUser
 # Step 11: Starting Skyport
 node .
 
-echo "Installation Completed - Follow Divyanshu08 on GitHub!"
+echo "Installation Completed!"
