@@ -41,7 +41,7 @@ npm run seed
 # Step 10: Create a new user
 npm run createUser
 
-# Step 11: Starting Skyport
+# Step 11: Starting Hydra Panel
 node .
 
 echo "𝐈𝐧𝐬𝐭𝐚𝐥𝐥𝐚𝐭𝐢𝐨𝐧 𝐂𝐨𝐦𝐩𝐥𝐞𝐭𝐞𝐝!"
