@@ -27,7 +27,7 @@ sudo apt install -y nodejs git
 git clone https://github.com/hydren-dev/HydraDAEMON
 
 echo "𝐈𝐧𝐬𝐭𝐚𝐥𝐥𝐚𝐭𝐢𝐨𝐧 𝐂𝐨𝐦𝐩𝐥𝐞𝐭𝐞𝐝 𝐧𝐨𝐰 𝐫𝐮𝐧 -"
-echo "𝐜𝐝 𝐬𝐤𝐲𝐩𝐨𝐫𝐭𝐝"
+echo "𝐜𝐝 𝐇𝐲𝐝𝐫𝐚𝐃𝐀𝐄𝐌𝐎𝐍"
 echo "𝐧𝐦𝐩 𝐢𝐧𝐬𝐭𝐚𝐥𝐥"
 echo "𝐄𝐧𝐭𝐞𝐫 𝐍𝐨𝐝𝐞 𝐂𝐨𝐧𝐟𝐢𝐠"
 echo "𝐧𝐨𝐝𝐞 ."
