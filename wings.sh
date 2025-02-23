@@ -24,10 +24,10 @@ sudo apt update
 sudo apt install -y nodejs git
 
 # Clone the repository
-git clone https://github.com/achul123/skyportd
+git clone https://github.com/hydren-dev/HydraDAEMON
 
-echo "Installation Done. Next Commands To Run:"
-echo "cd skyportd"
-echo "npm install"
-echo "Enter Your Node Config"
-echo "node ."
+echo "𝐈𝐧𝐬𝐭𝐚𝐥𝐥𝐚𝐭𝐢𝐨𝐧 𝐂𝐨𝐦𝐩𝐥𝐞𝐭𝐞𝐝 𝐧𝐨𝐰 𝐫𝐮𝐧 -"
+echo "𝐜𝐝 𝐬𝐤𝐲𝐩𝐨𝐫𝐭𝐝"
+echo "𝐧𝐦𝐩 𝐢𝐧𝐬𝐭𝐚𝐥𝐥"
+echo "𝐄𝐧𝐭𝐞𝐫 𝐍𝐨𝐝𝐞 𝐂𝐨𝐧𝐟𝐢𝐠"
+echo "𝐧𝐨𝐝𝐞 ."
