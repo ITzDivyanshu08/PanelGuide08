@@ -30,7 +30,7 @@ sudo apt install -y nodejs git
 git clone https://github.com/achul123/panel5
 
 # Step 7: Navigate to the project directory
-cd panel5
+cd Oversee
 
 # Step 8: Install project dependencies
 npm install
@@ -44,4 +44,4 @@ npm run createUser
 # Step 11: Starting Skyport
 node .
 
-echo "Installation Completed!"
+echo "𝐈𝐧𝐬𝐭𝐚𝐥𝐥𝐚𝐭𝐢𝐨𝐧 𝐂𝐨𝐦𝐩𝐥𝐞𝐭𝐞𝐝!"
