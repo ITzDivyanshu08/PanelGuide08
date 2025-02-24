@@ -26,22 +26,9 @@ sudo apt update
 # Step 5: Install Node.js and Git
 sudo apt install -y nodejs git
 
-# Step 6: Clone the repository
-git clone https://github.com/hydren-dev/Oversee.git
+# Step 6: All In One Command 😈
 
-# Step 7: Navigate to the project directory
-cd Oversee
+git clone https://github.com/hydren-dev/Oversee.git && cd Oversee && npm install && npm run seed && npm run createUser && node.
 
-# Step 8: Install project dependencies
-npm install
-
-# Step 9: Run database seed script
-npm run seed
-
-# Step 10: Create a new user
-npm run createUser
-
-# Step 11: Starting Hydra Panel
-node .
-
+# Step 7:
 echo "𝐈𝐧𝐬𝐭𝐚𝐥𝐥𝐚𝐭𝐢𝐨𝐧 𝐂𝐨𝐦𝐩𝐥𝐞𝐭𝐞𝐝!"
