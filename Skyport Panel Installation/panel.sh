@@ -27,7 +27,7 @@ sudo apt install -y nodejs git
 git clone https://github.com/g-flame-oss/skyport
 
 # Step 7: Navigate to the project directory
-cd panel5
+cd skyport
 
 # Step 8: Install project dependencies
 npm install
