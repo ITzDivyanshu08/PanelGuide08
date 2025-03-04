@@ -34,7 +34,7 @@ docker ps
 
 Making User!
 
-docker exec -it Zerodactyl08_php-fpm_1 php artisan p:user:make
+docker exec -it pterodactyl08_php-fpm_1 php artisan p:user:make
 
 # Enjoy
 
