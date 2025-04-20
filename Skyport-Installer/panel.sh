@@ -26,15 +26,10 @@ sudo apt install -y nodejs git
 
 # Step 6: Clone the repository
 git clone https://github.com/achul123/skyportd
-
-# Step 7: Go to directory
-cd skyportd
-
-# Step 8: Install NPM
-npm i
-
 # 𝐄𝐧𝐣𝐨𝐲 🎉
 echo "𝐌𝐚𝐧𝐮𝐚𝐥 𝐂𝐨𝐦𝐦𝐚𝐧𝐝𝐬 -"
+echo "𝐜𝐝 𝐬𝐤𝐲𝐩𝐨𝐫𝐭𝐝"
+echo "𝐧𝐩𝐦 𝐢"
 echo "𝐄𝐧𝐭𝐞𝐫 𝐘𝐨𝐮𝐫 𝐍𝐨𝐝𝐞 𝐂𝐨𝐧𝐟𝐢𝐠"
 echo "𝐧𝐨𝐝𝐞 ."
 echo "𝐈𝐧𝐬𝐭𝐚𝐥𝐥𝐚𝐭𝐢𝐨𝐧 𝐂𝐨𝐦𝐩𝐥𝐞𝐭𝐞𝐝 🎉"
