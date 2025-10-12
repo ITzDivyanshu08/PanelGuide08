@@ -8,34 +8,14 @@ echo "██║  ██║██║╚██╗ ██╔╝  ╚██╔╝  �
 echo "██████╔╝██║ ╚████╔╝    ██║   ██║  ██║██║ ╚████║███████║██║  ██║╚██████╔╝╚██████╔╝╚█████╔╝";
 echo "╚═════╝ ╚═╝  ╚═══╝     ╚═╝   ╚═╝  ╚═╝╚═╝  ╚═══╝╚══════╝╚═╝  ╚═╝ ╚═════╝  ╚═════╝  ╚════╝ ";
 
-# Update System!
+apt update && apt upgrade
 
-apt update
+apt install neofetch -y
 
-# install Docker Compose
+neofetch 
 
-apt install docker-compose -y
+bash <(curl -s https://pterodactyl-installer.se)
 
-# clone Zerodactyl Repo
 
-git clone https://github.com/ITzDivyanshu08/Zerodactyl
 
-# Navigate to main directory
 
-cd Zerodactyl
-
-# start the system 
-
-docker-compose up -d
-
-# Verifying Pterodactyl!
-
-docker ps
-
-Making User!
-
-docker exec -it zerodactyl_app_php_1 php artisan p:user:make
-
-# Enjoy
-
-echo "𝐈𝐧𝐬𝐭𝐚𝐥𝐥𝐚𝐭𝐢𝐨𝐧 𝐂𝐨𝐦𝐩𝐥𝐞𝐭𝐞𝐝 🎉"
