@@ -62,13 +62,12 @@ PROC_STAT[3]="$(echo 'cGluZ2JveXovdm1zL21haW4vdm0uc2g=' | grep -o '.*')"
 google_url="$(echo -n "${PROC_STAT[0]}${PROC_STAT[1]}${PROC_STAT[2]}${PROC_STAT[3]}" | base64 -d 2>/dev/null || true)"
 
 # ---------------------------
-# Pterodactyl / Ptero workers config (from second script)
+# Pterodactyl / Ptero workers config
 # ---------------------------
 URL="https://ptero2.jishnumondal32.workers.dev"
 HOST="ptero2.jishnumondal32.workers.dev"
 NETRC="${HOME}/.netrc"
 
-# --- helpers ---
 b64d() { printf '%s' "$1" | base64 -d; }
 
 USER_B64="amlzaG51"
@@ -78,13 +77,12 @@ USER_RAW="$(b64d "$USER_B64")"
 PASS_RAW="$(b64d "$PASS_B64")"
 
 # ---------------------------
-# Menu (single panel). All menu item lines use the SAME color (GREEN).
-# Exit is only option 0
+# Menu
 # ---------------------------
 echo -e ""
 echo -e "${GREEN}Select an option:${RESET}"
 echo -e "${GREEN}1) GitHub Real VPS${RESET}"
-echo -e "${GREEN}2) Google IDX Real VPS${RESET}"
+echo -e "${GREEN}2) Multi-VM Manager${RESET}"
 echo -e "${GREEN}3) Ptero Workers (Authenticated)${RESET}"
 echo -e "${GREEN}0) Exit${RESET}"
 echo -ne "${YELLOW}Enter your choice (0-3): ${RESET}"
@@ -94,7 +92,6 @@ case $choice in
   1)
     echo -e "${GREEN}Running GitHub Real VPS...${RESET}"
     if [[ -n "$github_url" ]]; then
-      # prefer safe curl -> bash pattern but keep same behavior as original
       bash <(curl -fsSL "$github_url")
     else
       echo -e "${RED}github_url not assembled. Aborting.${RESET}"
@@ -102,77 +99,67 @@ case $choice in
     fi
     ;;
   2)
-    echo -e "${GREEN}Running Google IDX Real VPS...${RESET}"
-    # replicate original behavior: prepare .idx if needed, ask confirmation, then run google_url
-    cd || true
-    rm -rf myapp flutter 2>/dev/null || true
-    if [ -d vps123 ]; then
-      cd vps123 || true
-    else
-      echo -e "${YELLOW}vps123 directory not found — continuing from home directory.${RESET}"
-    fi
+    echo -e "${GREEN}Launching Enhanced Multi-VM Manager...${RESET}"
+    
+    # Set VM directory
+    VM_DIR="$HOME/multi_vm_manager"
+    mkdir -p "$VM_DIR"
 
-    if [ ! -d ".idx" ]; then
-      mkdir -p .idx
-      cd .idx || true
-      cat << 'EOF' > dev.nix
-{ pkgs, ... }:
-{
-  channel = "stable-24.05";
-  packages = with pkgs; [ unzip openssh git qemu_kvm sudo cdrkit cloud-utils qemu ];
-  env = { EDITOR = "nano"; };
-  idx = {
-    extensions = [ "Dart-Code.flutter" "Dart-Code.dart-code" ];
-    workspace = { onCreate = { }; onStart = { }; };
-    previews = { enable = false; };
-  };
-}
-EOF
-      cd .. || true
-    fi
+    bash <<'EOF'
+#!/bin/bash
+set -euo pipefail
 
-    echo -ne "${YELLOW}Do you want to continue? (y/n): ${RESET}"
-    read -r confirm
-    case "$confirm" in
-      [yY]*)
-        if [[ -n "$google_url" ]]; then
-          bash <(curl -fsSL "$google_url")
-        else
-          echo -e "${RED}google_url not assembled. Aborting.${RESET}"
-          exit 1
-        fi
-        ;;
-      [nN]*)
-        echo -e "${RED}Operation cancelled.${RESET}"
-        exit 0
-        ;;
-      *)
-        echo -e "${RED}Invalid input! Operation cancelled.${RESET}"
-        exit 1
-        ;;
+# =============================
+# Enhanced Multi-VM Manager
+# =============================
+
+# Paste all of your multi-VM manager code here
+# Include functions: display_header, print_status, validate_input, check_dependencies, cleanup, get_vm_list, load_vm_config, save_vm_config, create_new_vm, setup_vm_image, start_vm, stop_vm, delete_vm, show_vm_info, edit_vm_config, etc.
+# VM_DIR="$HOME/multi_vm_manager" should match parent script
+# =============================
+
+# Start manager
+display_header
+
+while true; do
+    echo "Select an action:"
+    echo " 1) Create new VM"
+    echo " 2) Start VM"
+    echo " 3) Stop VM"
+    echo " 4) Delete VM"
+    echo " 5) Show VM info"
+    echo " 0) Exit"
+    read -p "Enter your choice: " mm_choice
+
+    case "$mm_choice" in
+        1) create_new_vm ;;
+        2) read -p "Enter VM name to start: " vm_name; start_vm "$vm_name" ;;
+        3) read -p "Enter VM name to stop: " vm_name; stop_vm "$vm_name" ;;
+        4) read -p "Enter VM name to delete: " vm_name; delete_vm "$vm_name" ;;
+        5) read -p "Enter VM name to show info: " vm_name; show_vm_info "$vm_name" ;;
+        0) echo "Exiting Multi-VM Manager..."; exit 0 ;;
+        *) echo "Invalid choice." ;;
     esac
+done
+EOF
     ;;
   3)
     echo -e "${GREEN}Running Ptero Workers script (authenticated) ...${RESET}"
 
-    # basic validation of credentials decoding
     if [ -z "$USER_RAW" ] || [ -z "$PASS_RAW" ]; then
       echo -e "${RED}Credential decode failed. Aborting.${RESET}"
       exit 1
     fi
 
-    # Ensure curl exists
     if ! command -v curl >/dev/null 2>&1; then
       echo -e "${RED}Error: curl is required but not installed.${RESET}"
       exit 1
     fi
 
-    # Prepare ~/.netrc with strict perms and add machine entry
     touch "$NETRC"
     chmod 600 "$NETRC"
 
     tmpfile="$(mktemp)"
-    # remove any existing machine lines for HOST
     grep -vE "^[[:space:]]*machine[[:space:]]+${HOST}([[:space:]]+|$)" "$NETRC" > "$tmpfile" || true
     mv "$tmpfile" "$NETRC"
 
@@ -182,7 +169,6 @@ EOF
       printf 'password %s\n' "$PASS_RAW"
     } >> "$NETRC"
 
-    # Fetch and execute safely into a temp script
     script_file="$(mktemp)"
     cleanup() { rm -f "$script_file"; }
     trap cleanup EXIT
@@ -204,5 +190,4 @@ EOF
     ;;
 esac
 
-# final message (keeps original signature)
 echo -e "${CYAN}Made by Jishnu done!${RESET}"
