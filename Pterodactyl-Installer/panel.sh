@@ -8,22 +8,41 @@ BLUE='\e[34m'
 CYAN='\e[36m'
 RESET='\e[0m'
 
+type_line() {
+  local line="$1"
+  local color="$2"
+  local delay="${3:-0.01}"
+  for ((i=0; i<${#line}; i++)); do
+    echo -ne "${color}${line:i:1}${RESET}"
+    sleep "$delay"
+  done
+  echo ""
+}
+
 animate_logo() {
   clear
   local logo=(
-________  .__                                   .__           _______     ______
-______ \ ||  ..__    ____   |  |  __ __ \   _  \   /  __  \
-|    |  |  \  / <   |  |_  \  /    \ /  /  |  |  |  /  /\  \  >      <
-|    `   \  |\   / _  | / __ |   |  \_ |   Y  \  |  /\  _/   /   --   \
-/_______  /| _/  / |(  /|  /___  >|  //  ____  /______  /
-/          /          /     /     /     /              /        /
+"________  .__                                   .__           _______     ______  "
+"\\______ \\ |__|__  _____.__._____    ____   _____|  |__  __ __ \\   _  \\   /  __  \\ "
+" |    |  \\|  \\  \\/ <   |  |\\__  \\  /    \\ /  ___/  |  \\|  |  \\/  /_\\  \\  >      < "
+" |    \`   \\  |\\   / \\___  | / __ \\|   |  \\\\___ \\|   Y  \\  |  /\\  \\_/   \\/   --   \\"
+"/_______  /__| \\_/  / ____|(____  /___|  /____  >___|  /____/  \\_____  /\\______  /"
+"        \\/          \\/          \\/     \\/     \\/     \\/              \\/        \\/ "
+  )
 
-
-  
-  for line in "${logo[@]}"; do
-    echo -e "${CYAN}${line}${RESET}"
-    sleep 0.2
+  # Print first 5 lines normally in cyan
+  for i in {0..4}; do
+    type_line "${logo[i]}" "$CYAN" 0.003
   done
+
+  # Last line: split to add Divyanshu08 in blue
+  local part1="        \\/          \\/          \\/     \\/     \\/     \\/  "
+  local name="Divyanshu08"
+  local part2="  \\/        \\/ "
+  
+  type_line "$part1" "$CYAN" 0.003
+  type_line "$name" "$BLUE" 0.01
+  type_line "$part2" "$CYAN" 0.003
   echo ""
   sleep 0.5
 }
