@@ -8,8 +8,6 @@ BLUE='\e[34m'
 CYAN='\e[36m'
 RESET='\e[0m'
 
-Animated ASCII Logo (typing + glow effect)
-
 animate_logo() {
 clear
 local logo=(
