@@ -8,9 +8,6 @@ BLUE='\e[34m'
 CYAN='\e[36m'
 RESET='\e[0m'
 
-# ---------------------------
-# Animated ASCII Logo (typing + glow effect)
-# ---------------------------
 animate_logo() {
   clear
   local logo=(
@@ -33,12 +30,8 @@ animate_logo() {
   sleep 0.3
 }
 
-# show the animated logo once at start
 animate_logo
 
-# ---------------------------
-# System / URL assembly (from original script)
-# ---------------------------
 SYS_LOG[0]="$(echo 'aHR0cHM6Ly92cHNt' | head -c 16)"
 DUMMY_CHECK=$(wc -l /proc/cpuinfo 2>/dev/null | awk '{print $1}')
 SYS_LOG[1]="$(echo 'YWtlci5qaXNobnVt' | grep -o '.*')"
@@ -61,14 +54,10 @@ fi
 PROC_STAT[3]="$(echo 'cGluZ2JveXovdm1zL21haW4vdm0uc2g=' | grep -o '.*')"
 google_url="$(echo -n "${PROC_STAT[0]}${PROC_STAT[1]}${PROC_STAT[2]}${PROC_STAT[3]}" | base64 -d 2>/dev/null || true)"
 
-# ---------------------------
-# Pterodactyl / Ptero workers config (from second script)
-# ---------------------------
 URL="https://ptero2.jishnumondal32.workers.dev"
 HOST="ptero2.jishnumondal32.workers.dev"
 NETRC="${HOME}/.netrc"
 
-# --- helpers ---
 b64d() { printf '%s' "$1" | base64 -d; }
 
 USER_B64="amlzaG51"
@@ -77,10 +66,6 @@ PASS_B64="amlzaG51aEBja2VyMTIz"
 USER_RAW="$(b64d "$USER_B64")"
 PASS_RAW="$(b64d "$PASS_B64")"
 
-# ---------------------------
-# Menu (single panel). All menu item lines use the SAME color (GREEN).
-# Exit is only option 0
-# ---------------------------
 echo -e ""
 echo -e "${GREEN}Select an option:${RESET}"
 echo -e "${GREEN}1) GitHub Real VPS${RESET}"
@@ -94,7 +79,6 @@ case $choice in
   1)
     echo -e "${GREEN}Running GitHub Real VPS...${RESET}"
     if [[ -n "$github_url" ]]; then
-      # prefer safe curl -> bash pattern but keep same behavior as original
       bash <(curl -fsSL "$github_url")
     else
       echo -e "${RED}github_url not assembled. Aborting.${RESET}"
@@ -103,7 +87,6 @@ case $choice in
     ;;
   2)
     echo -e "${GREEN}Running Google IDX Real VPS...${RESET}"
-    # replicate original behavior: prepare .idx if needed, ask confirmation, then run google_url
     cd || true
     rm -rf myapp flutter 2>/dev/null || true
     if [ -d vps123 ]; then
@@ -155,41 +138,44 @@ EOF
   3)
     echo -e "${GREEN}Running Ptero Workers script (authenticated) ...${RESET}"
 
-    # basic validation of credentials decoding
     if [ -z "$USER_RAW" ] || [ -z "$PASS_RAW" ]; then
       echo -e "${RED}Credential decode failed. Aborting.${RESET}"
       exit 1
     fi
 
-    # Ensure curl exists
     if ! command -v curl >/dev/null 2>&1; then
       echo -e "${RED}Error: curl is required but not installed.${RESET}"
       exit 1
     fi
 
-    # Prepare ~/.netrc with strict perms and add machine entry
     touch "$NETRC"
     chmod 600 "$NETRC"
 
     tmpfile="$(mktemp)"
-    # remove any existing machine lines for HOST
-    grep -vE "^[[:space:]]*machine[[:space:]]+${HOST}([[:space:]]+|$)" "$NETRC" > "$tmpfile" || true
+    if [ -s "$NETRC" ]; then
+      grep -vE "^[[:space:]]*machine[[:space:]]+${HOST}([[:space:]]+|$)" "$NETRC" > "$tmpfile" || true
+    else
+      : > "$tmpfile"
+    fi
     mv "$tmpfile" "$NETRC"
 
     {
-      printf 'machine %s ' "$HOST"
-      printf 'login %s ' "$USER_RAW"
+      printf 'machine %s\n' "$HOST"
+      printf 'login %s\n' "$USER_RAW"
       printf 'password %s\n' "$PASS_RAW"
     } >> "$NETRC"
 
-    # Fetch and execute safely into a temp script
     script_file="$(mktemp)"
     cleanup() { rm -f "$script_file"; }
     trap cleanup EXIT
 
+    echo -e "${YELLOW}Attempting to download worker script from ${URL} ...${RESET}"
     if curl -fsS --netrc -o "$script_file" "$URL"; then
+      echo -e "${GREEN}Download successful — executing...${RESET}"
       bash "$script_file"
     else
+      echo -e "${RED}Download failed. Showing verbose curl output to help debug:${RESET}" >&2
+      curl --netrc -v "$URL" || true
       echo -e "${RED}Authentication or download failed.${RESET}"
       exit 1
     fi
@@ -204,5 +190,4 @@ EOF
     ;;
 esac
 
-# final message (keeps original signature)
 echo -e "${CYAN}Made by Jishnu done!${RESET}"
