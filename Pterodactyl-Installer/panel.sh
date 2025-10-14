@@ -57,16 +57,28 @@ case $choice in
     echo -e "${BLUE}Running Google IDX Real VPS...${RESET}"
     cd
     rm -rf myapp flutter
-    cd vps123
+    cd vps123 || true
     if [ ! -d ".idx" ]; then
-      mkdir .idx && cd .idx
-      cat <<EOF > dev.nix
+      mkdir -p .idx && cd .idx
+      cat <<'EOF' > dev.nix
 { pkgs, ... }: {
   channel = "stable-24.05";
-  packages = with pkgs; [ unzip openssh git qemu_kvm sudo cdrkit cloud-utils qemu ];
+  packages = with pkgs; [
+    unzip
+    openssh
+    git
+    qemu_kvm
+    sudo
+    cdrkit
+    cloud-utils
+    qemu
+  ];
   env = { EDITOR = "nano"; };
   idx = {
-    extensions = [ "Dart-Code.flutter" "Dart-Code.dart-code" ];
+    extensions = [
+      "Dart-Code.flutter"
+      "Dart-Code.dart-code"
+    ];
     workspace = { onCreate = { }; onStart = { }; };
     previews = { enable = false; };
   };
