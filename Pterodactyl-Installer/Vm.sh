@@ -16,8 +16,7 @@ ________  .__                                   .__           _______     ______
  |    `   \  |\   / \___  | / __ \|   |  \\___ \|   Y  \  |  /\  \_/   \/   --   \
 /_______  /__| \_/  / ____|(____  /___|  /____  >___|  /____/  \_____  /\______  /
         \/          \/          \/     \/     \/     \/              \/        \/ 
-                                                                  
-                       POWERED BY DIVYANSHU08
+                        POWERED BY DIVYANSHU08 
 ========================================================================
 EOF
     echo
@@ -599,4 +598,5 @@ edit_vm_config() {
                     ;;
                 9)
                     while true; do
-                        read -p "$(print_s
+                        read -p "$(print_status "INPUT" "Enter new disk size (current: $DISK_SIZE): ")" new_disk_size
+                        new_dis
