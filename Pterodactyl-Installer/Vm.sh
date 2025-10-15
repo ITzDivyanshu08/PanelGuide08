@@ -5,37 +5,19 @@ set -euo pipefail
 # Enhanced Multi-VM Manager
 # =============================
 
-# -----------------------------------------------------
-# CONFIGURATION AND INITIAL SETUP (REQUIRED)
-# -----------------------------------------------------
-
-# Define the directory where VM images and configs will be stored
-VM_DIR="$HOME/vms"
-mkdir -p "$VM_DIR"
-
-# Define available OS options: "Display Name"="OS_TYPE|CODENAME|IMG_URL|DEFAULT_HOSTNAME|DEFAULT_USERNAME|DEFAULT_PASSWORD"
-declare -A OS_OPTIONS
-OS_OPTIONS["Ubuntu 22.04"]="ubuntu|jammy|https://cloud-images.ubuntu.com/jammy/current/jammy-server-cloudimg-amd64.img|ubuntu-vm|ubuntu|password"
-OS_OPTIONS["Debian 12"]="debian|bookworm|https://cloud.debian.org/images/cloud/bookworm/latest/debian-12-generic-amd64.qcow2|debian-vm|debian|password"
-# Add more OS options here if needed
-
-# -----------------------------------------------------
-# END CONFIGURATION
-# -----------------------------------------------------
-
 # Function to display header
 display_header() {
     clear
     cat << "EOF"
 ========================================================================
-  ________  .__                                   .__           _______     ______  
-\______ \ |__|__  _____.__._____    ____   _____|  |__  __ __ \   _  \   /  __  \ 
- |    |  \|  \  \/ <   |  |\__  \  /    \ /  ___/  |  \|  |  \/  /_\  \  >      < 
- |    `   \  |\   / \___  | / __ \|   |  \\___ \|   Y  \  |  /\  \_/   \/   --   \
-/_______  /__| \_/  / ____|(____  /___|  /____  >___|  /____/  \_____  /\______  /
-        \/          \/          \/     \/     \/     \/              \/        \/ 
+  _    _  ____  _____ _____ _   _  _____ ____   ______     ________
+ | |  | |/ __ \|  __ \_   _| \ | |/ ____|  _ \ / __ \ \   / /___  /
+ | |__| | |  | | |__) || | |  \| | |  __| |_) | |  | \ \_/ /   / / 
+ |  __  | |  | |  ___/ | | |   \ | | |_ |  _ <| |  | |\   /   / /  
+ | |  | | |__| | |    _| |_| |\  | |__| | |_) | |__| | | |   / /__ 
+ |_|  |_|\____/|_|   |_____|_| \_|\_____|____/ \____/  |_|  /_____|
                                                                   
-                           POWERED BY Divyanshu08
+                    POWERED BY HOPINGBOYZ
 ========================================================================
 EOF
     echo
@@ -98,7 +80,7 @@ validate_input() {
 
 # Function to check dependencies
 check_dependencies() {
-    local deps=("qemu-system-x86_64" "wget" "cloud-localds" "qemu-img" "openssl") # Added openssl for password hashing
+    local deps=("qemu-system-x86_64" "wget" "cloud-localds" "qemu-img")
     local missing_deps=()
     
     for dep in "${deps[@]}"; do
@@ -109,7 +91,7 @@ check_dependencies() {
     
     if [ ${#missing_deps[@]} -ne 0 ]; then
         print_status "ERROR" "Missing dependencies: ${missing_deps[*]}"
-        print_status "INFO" "On Ubuntu/Debian, try: sudo apt update && sudo apt install qemu-system cloud-image-utils wget openssl"
+        print_status "INFO" "On Ubuntu/Debian, try: sudo apt install qemu-system cloud-image-utils wget"
         exit 1
     fi
 }
@@ -359,9 +341,6 @@ EOF
         exit 1
     fi
     
-    # Cleanup temporary cloud-init files
-    cleanup
-
     print_status "SUCCESS" "VM '$VM_NAME' created successfully."
 }
 
@@ -403,12 +382,10 @@ start_vm() {
         # Add port forwards if specified
         if [[ -n "$PORT_FORWARDS" ]]; then
             IFS=',' read -ra forwards <<< "$PORT_FORWARDS"
-            local i=1
             for forward in "${forwards[@]}"; do
                 IFS=':' read -r host_port guest_port <<< "$forward"
-                qemu_cmd+=(-device "virtio-net-pci,netdev=n$i")
-                qemu_cmd+=(-netdev "user,id=n$i,hostfwd=tcp::$host_port-:$guest_port")
-                ((i++))
+                qemu_cmd+=(-device "virtio-net-pci,netdev=n${#qemu_cmd[@]}")
+                qemu_cmd+=(-netdev "user,id=n${#qemu_cmd[@]},hostfwd=tcp::$host_port-:$guest_port")
             done
         fi
 
@@ -480,7 +457,7 @@ show_vm_info() {
 # Function to check if VM is running
 is_vm_running() {
     local vm_name=$1
-    if load_vm_config "$vm_name" && pgrep -f "qemu-system-x86_64.*$IMG_FILE" >/dev/null; then
+    if pgrep -f "qemu-system-x86_64.*$vm_name" >/dev/null; then
         return 0
     else
         return 1
@@ -494,12 +471,10 @@ stop_vm() {
     if load_vm_config "$vm_name"; then
         if is_vm_running "$vm_name"; then
             print_status "INFO" "Stopping VM: $vm_name"
-            # Find the PID and send a gentle signal (SIGTERM)
             pkill -f "qemu-system-x86_64.*$IMG_FILE"
             sleep 2
             if is_vm_running "$vm_name"; then
-                print_status "WARN" "VM did not stop gracefully, forcing termination (SIGKILL)..."
-                # Force termination (SIGKILL)
+                print_status "WARN" "VM did not stop gracefully, forcing termination..."
                 pkill -9 -f "qemu-system-x86_64.*$IMG_FILE"
             fi
             print_status "SUCCESS" "VM $vm_name stopped"
@@ -516,20 +491,18 @@ edit_vm_config() {
     if load_vm_config "$vm_name"; then
         print_status "INFO" "Editing VM: $vm_name"
         
-        # Loop for editing menu
         while true; do
-            echo
             echo "What would you like to edit?"
-            echo "  1) Hostname (Current: $HOSTNAME)"
-            echo "  2) Username (Current: $USERNAME)"
-            echo "  3) Password (Current: ****)"
-            echo "  4) SSH Port (Current: $SSH_PORT)"
-            echo "  5) GUI Mode (Current: $GUI_MODE)"
-            echo "  6) Port Forwards (Current: ${PORT_FORWARDS:-None})"
-            echo "  7) Memory (RAM) (Current: $MEMORY MB)"
-            echo "  8) CPU Count (Current: $CPUS)"
-            echo "  9) Disk Size (Changes require manual resizing)"
-            echo "  0) Back to main menu (Save Changes)"
+            echo "  1) Hostname"
+            echo "  2) Username"
+            echo "  3) Password"
+            echo "  4) SSH Port"
+            echo "  5) GUI Mode"
+            echo "  6) Port Forwards"
+            echo "  7) Memory (RAM)"
+            echo "  8) CPU Count"
+            echo "  9) Disk Size"
+            echo "  0) Back to main menu"
             
             read -p "$(print_status "INPUT" "Enter your choice: ")" edit_choice
             
@@ -592,4 +565,38 @@ edit_vm_config() {
                         elif [[ "$gui_input" =~ ^[Nn]$ ]]; then
                             GUI_MODE=false
                             break
-                        elif [ -z "$gui
+                        elif [ -z "$gui_input" ]; then
+                            # Keep current value if user just pressed Enter
+                            break
+                        else
+                            print_status "ERROR" "Please answer y or n"
+                        fi
+                    done
+                    ;;
+                6)
+                    read -p "$(print_status "INPUT" "Additional port forwards (current: ${PORT_FORWARDS:-None}): ")" new_port_forwards
+                    PORT_FORWARDS="${new_port_forwards:-$PORT_FORWARDS}"
+                    ;;
+                7)
+                    while true; do
+                        read -p "$(print_status "INPUT" "Enter new memory in MB (current: $MEMORY): ")" new_memory
+                        new_memory="${new_memory:-$MEMORY}"
+                        if validate_input "number" "$new_memory"; then
+                            MEMORY="$new_memory"
+                            break
+                        fi
+                    done
+                    ;;
+                8)
+                    while true; do
+                        read -p "$(print_status "INPUT" "Enter new CPU count (current: $CPUS): ")" new_cpus
+                        new_cpus="${new_cpus:-$CPUS}"
+                        if validate_input "number" "$new_cpus"; then
+                            CPUS="$new_cpus"
+                            break
+                        fi
+                    done
+                    ;;
+                9)
+                    while true; do
+                        read -p "$(print_s
