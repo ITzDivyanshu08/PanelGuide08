@@ -587,7 +587,65 @@ edit_vm_config() {
                         fi
                     done
                     ;;
-                8)
+                                    read -p "$(print_status "INPUT" "Enter VM number to start: ")" vm_num
+                    if [[ "$vm_num" =~ ^[0-9]+$ ]] && [ "$vm_num" -ge 1 ] && [ "$vm_num" -le $vm_count ]; then
+                        start_vm "${vms[$((vm_num-1))]}"
+                    else
+                        print_status "ERROR" "Invalid selection"
+                    fi
+                fi
+                ;;
+            3)
+                if [ $vm_count -gt 0 ]; then
+                    read -p "$(print_status "INPUT" "Enter VM number to stop: ")" vm_num
+                    if [[ "$vm_num" =~ ^[0-9]+$ ]] && [ "$vm_num" -ge 1 ] && [ "$vm_num" -le $vm_count ]; then
+                        stop_vm "${vms[$((vm_num-1))]}"
+                    else
+                        print_status "ERROR" "Invalid selection"
+                    fi
+                fi
+                ;;
+            4)
+                if [ $vm_count -gt 0 ]; then
+                    read -p "$(print_status "INPUT" "Enter VM number to show info: ")" vm_num
+                    if [[ "$vm_num" =~ ^[0-9]+$ ]] && [ "$vm_num" -ge 1 ] && [ "$vm_num" -le $vm_count ]; then
+                        show_vm_info "${vms[$((vm_num-1))]}"
+                    else
+                        print_status "ERROR" "Invalid selection"
+                    fi
+                fi
+                ;;
+            5)
+                if [ $vm_count -gt 0 ]; then
+                    read -p "$(print_status "INPUT" "Enter VM number to edit: ")" vm_num
+                    if [[ "$vm_num" =~ ^[0-9]+$ ]] && [ "$vm_num" -ge 1 ] && [ "$vm_num" -le $vm_count ]; then
+                        edit_vm_config "${vms[$((vm_num-1))]}"
+                    else
+                        print_status "ERROR" "Invalid selection"
+                    fi
+                fi
+                ;;
+            6)
+                if [ $vm_count -gt 0 ]; then
+                    read -p "$(print_status "INPUT" "Enter VM number to delete: ")" vm_num
+                    if [[ "$vm_num" =~ ^[0-9]+$ ]] && [ "$vm_num" -ge 1 ] && [ "$vm_num" -le $vm_count ]; then
+                        delete_vm "${vms[$((vm_num-1))]}"
+                    else
+                        print_status "ERROR" "Invalid selection"
+                    fi
+                fi
+                ;;
+            7)
+                if [ $vm_count -gt 0 ]; then
+                    read -p "$(print_status "INPUT" "Enter VM number to resize disk: ")" vm_num
+                    if [[ "$vm_num" =~ ^[0-9]+$ ]] && [ "$vm_num" -ge 1 ] && [ "$vm_num" -le $vm_count ]; then
+                        resize_vm_disk "${vms[$((vm_num-1))]}"
+                    else
+                        print_status "ERROR" "Invalid selection"
+                    fi
+                fi
+                ;;
+            8)
                     while true; do
                         read -p "$(print_status "INPUT" "Enter new CPU count (current: $CPUS): ")" new_cpus
                         new_cpus="${new_cpus:-$CPUS}"
@@ -597,7 +655,54 @@ edit_vm_config() {
                         fi
                     done
                     ;;
-                size. No changes made."
+                9)
+                    while true; do
+                        read -p "$(print_status "INPUT" "Enter new disk size (current: $DISK_SIZE): ")" new_disk_size
+                        new_disk_size="${new_disk_size:-$DISK_SIZE}"
+                        if validate_input "size" "$new_disk_size"; then
+                            DISK_SIZE="$new_disk_size"
+                            break
+                        fi
+                    done
+                    ;;
+                0)
+                    return 0
+                    ;;
+                *)
+                    print_status "ERROR" "Invalid selection"
+                    continue
+                    ;;
+            esac
+            
+            # Recreate seed image with new configuration if user/password/hostname changed
+            if [[ "$edit_choice" -eq 1 || "$edit_choice" -eq 2 || "$edit_choice" -eq 3 ]]; then
+                print_status "INFO" "Updating cloud-init configuration..."
+                setup_vm_image
+            fi
+            
+            # Save configuration
+            save_vm_config
+            
+            read -p "$(print_status "INPUT" "Continue editing? (y/N): ")" continue_editing
+            if [[ ! "$continue_editing" =~ ^[Yy]$ ]]; then
+                break
+            fi
+        done
+    fi
+}
+
+# Function to resize VM disk
+resize_vm_disk() {
+    local vm_name=$1
+    
+    if load_vm_config "$vm_name"; then
+        print_status "INFO" "Current disk size: $DISK_SIZE"
+        
+        while true; do
+            read -p "$(print_status "INPUT" "Enter new disk size (e.g., 50G): ")" new_disk_size
+            if validate_input "size" "$new_disk_size"; then
+                if [[ "$new_disk_size" == "$DISK_SIZE" ]]; then
+                    print_status "INFO" "New disk size is the same as current size. No changes made."
                     return 0
                 fi
                 
