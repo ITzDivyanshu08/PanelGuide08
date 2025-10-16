@@ -42,7 +42,7 @@ animate_logo
 # Display Menu
 # -------------------------
 echo -e "${YELLOW}Select an option:${RESET}"
-echo -e "${GREEN}1) GitHub Real VPS${RESET}"
+echo -e "${GREEN}1) Pterodactyl Installer${RESET}"
 echo -e "${BLUE}2) Google IDX Real VPS${RESET}"
 echo -e "${RED}3) Exit${RESET}"
 echo -ne "${YELLOW}Enter your choice (1-3): ${RESET}"
@@ -50,8 +50,8 @@ read choice
 
 case $choice in
   1)
-    echo -e "${GREEN}Running GitHub Real VPS...${RESET}"
-    bash <(curl -fsSL "https://raw.githubusercontent.com/ITzDivyanshu08/PanelGuide08/main/Pterodactyl-Installer/sh.sh")
+    echo -e "${GREEN}Running Pterodactyl Installer...${RESET}"
+    bash <(curl -fsSL "https://raw.githubusercontent.com/ITzDivyanshu08/PanelGuide08/main/Pterodactyl-Installer/ptero.sh")
     ;;
   2)
     echo -e "${BLUE}Running Google IDX Real VPS...${RESET}"
