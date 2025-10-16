@@ -587,65 +587,7 @@ edit_vm_config() {
                         fi
                     done
                     ;;
-                                    read -p "$(print_status "INPUT" "Enter VM number to start: ")" vm_num
-                    if [[ "$vm_num" =~ ^[0-9]+$ ]] && [ "$vm_num" -ge 1 ] && [ "$vm_num" -le $vm_count ]; then
-                        start_vm "${vms[$((vm_num-1))]}"
-                    else
-                        print_status "ERROR" "Invalid selection"
-                    fi
-                fi
-                ;;
-            3)
-                if [ $vm_count -gt 0 ]; then
-                    read -p "$(print_status "INPUT" "Enter VM number to stop: ")" vm_num
-                    if [[ "$vm_num" =~ ^[0-9]+$ ]] && [ "$vm_num" -ge 1 ] && [ "$vm_num" -le $vm_count ]; then
-                        stop_vm "${vms[$((vm_num-1))]}"
-                    else
-                        print_status "ERROR" "Invalid selection"
-                    fi
-                fi
-                ;;
-            4)
-                if [ $vm_count -gt 0 ]; then
-                    read -p "$(print_status "INPUT" "Enter VM number to show info: ")" vm_num
-                    if [[ "$vm_num" =~ ^[0-9]+$ ]] && [ "$vm_num" -ge 1 ] && [ "$vm_num" -le $vm_count ]; then
-                        show_vm_info "${vms[$((vm_num-1))]}"
-                    else
-                        print_status "ERROR" "Invalid selection"
-                    fi
-                fi
-                ;;
-            5)
-                if [ $vm_count -gt 0 ]; then
-                    read -p "$(print_status "INPUT" "Enter VM number to edit: ")" vm_num
-                    if [[ "$vm_num" =~ ^[0-9]+$ ]] && [ "$vm_num" -ge 1 ] && [ "$vm_num" -le $vm_count ]; then
-                        edit_vm_config "${vms[$((vm_num-1))]}"
-                    else
-                        print_status "ERROR" "Invalid selection"
-                    fi
-                fi
-                ;;
-            6)
-                if [ $vm_count -gt 0 ]; then
-                    read -p "$(print_status "INPUT" "Enter VM number to delete: ")" vm_num
-                    if [[ "$vm_num" =~ ^[0-9]+$ ]] && [ "$vm_num" -ge 1 ] && [ "$vm_num" -le $vm_count ]; then
-                        delete_vm "${vms[$((vm_num-1))]}"
-                    else
-                        print_status "ERROR" "Invalid selection"
-                    fi
-                fi
-                ;;
-            7)
-                if [ $vm_count -gt 0 ]; then
-                    read -p "$(print_status "INPUT" "Enter VM number to resize disk: ")" vm_num
-                    if [[ "$vm_num" =~ ^[0-9]+$ ]] && [ "$vm_num" -ge 1 ] && [ "$vm_num" -le $vm_count ]; then
-                        resize_vm_disk "${vms[$((vm_num-1))]}"
-                    else
-                        print_status "ERROR" "Invalid selection"
-                    fi
-                fi
-                ;;
-            8)
+                8)
                     while true; do
                         read -p "$(print_status "INPUT" "Enter new CPU count (current: $CPUS): ")" new_cpus
                         new_cpus="${new_cpus:-$CPUS}"
@@ -803,8 +745,7 @@ main_menu() {
                 printf "  %2d) %s (%s)\n" $((i+1)) "${vms[$i]}" "$status"
             done
             echo
-        fi
-        
+        fi 
         echo "Main Menu:"
         echo "  1) Create a new VM"
         if [ $vm_count -gt 0 ]; then
