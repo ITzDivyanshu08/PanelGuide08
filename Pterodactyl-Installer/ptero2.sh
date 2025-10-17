@@ -146,7 +146,7 @@ show_menu() {
     clear
     print_header_rule
     echo -e "${CYAN}           🚀 Ultimate Hosting Manager            ${NC}"
-    echo -e "${CYAN}                made by Divyanshu08                 ${NC}"
+    echo -e "${CYAN}                Made by Divyanshu08                 ${NC}"
     print_header_rule
 
     big_header "MAIN MENU"
