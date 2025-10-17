@@ -53,7 +53,7 @@ read choice
 case $choice in
   1)
     echo -e "${GREEN}Running Pterodactyl Installer...${RESET}"
-    bash <(curl -fsSL "https://raw.githubusercontent.com/ITzDivyanshu08/PanelGuide08/main/Pterodactyl-Installer/ptero.sh")
+    bash <(curl -fsSL "https://raw.githubusercontent.com/ITzDivyanshu08/PanelGuide08/main/Pterodactyl-Installer/ptero2.sh")
     ;;
   2)
     echo -e "${BLUE}Running Google IDX Real VPS...${RESET}"
