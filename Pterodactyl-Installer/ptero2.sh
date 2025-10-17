@@ -167,7 +167,7 @@ show_menu() {
     echo -e "${YELLOW}${BOLD}📝 Select an option [0-9]: ${NC}"
 }
 
-# Welcome animation with robust 'JISHNU' ASCII via heredoc
+# Welcome animation with robust 'Divyanshu' ASCII via heredoc
 welcome_animation() {
     clear
     print_header_rule
@@ -231,7 +231,7 @@ while true; do
             read -p "$(echo -e "${YELLOW}Press Enter to continue...${NC}")" -n 1
             ;;
         0)
-            echo -e "${GREEN}Exiting Jishnu Hosting Manager...${NC}"
+            echo -e "${GREEN}Exiting Ultimate Hosting Manager...${NC}"
             print_header_rule
             echo -e "${CYAN}           Thank you for using our tools!       ${NC}"
             print_header_rule
