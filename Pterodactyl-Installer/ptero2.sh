@@ -145,8 +145,8 @@ system_info() {
 show_menu() {
     clear
     print_header_rule
-    echo -e "${CYAN}           🚀 JISHNU HOSTING MANAGER            ${NC}"
-    echo -e "${CYAN}              made by nobita , jishnu                  ${NC}"
+    echo -e "${CYAN}           🚀 Ultimate Hosting Manager            ${NC}"
+    echo -e "${CYAN}                made by Divyanshu08                 ${NC}"
     print_header_rule
 
     big_header "MAIN MENU"
