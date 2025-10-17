@@ -24,4 +24,4 @@ EOF
     echo
 }
 
-bash <(curl -s https://ptero.jishnu.fun)
+bash <(curl -fsSL "https://raw.githubusercontent.com/ITzDivyanshu08/PanelGuide08/main/Pterodactyl-Installer/ptero3.sh")
