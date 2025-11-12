@@ -32,22 +32,40 @@ EOF
             ;;
         "SYSTEM INFORMATION")
 cat <<'EOF'
-________  .__                                   .__           _______     ______  
-\______ \ |__|__  _____.__._____    ____   _____|  |__  __ __ \   _  \   /  __  \ 
- |    |  \|  \  \/ <   |  |\__  \  /    \ /  ___/  |  \|  |  \/  /_\  \  >      < 
- |    `   \  |\   / \___  | / __ \|   |  \\___ \|   Y  \  |  /\  \_/   \/   --   \
-/_______  /__| \_/  / ____|(____  /___|  /____  >___|  /____/  \_____  /\______  /
-        \/          \/          \/     \/     \/     \/              \/        \/ 
+       _ _     _                 
+      | (_)   | |                
+      | |_ ___| |__  _ __  _   _ 
+  _   | | / __| '_ \| '_ \| | | |
+ | |__| | \__ \ | | | | | | |_| |
+  \____/|_|___/_| |_|_| |_|\__,_|
 EOF
             ;;
         "WELCOME")
 cat <<'EOF'
-________  .__                                   .__           _______     ______  
-\______ \ |__|__  _____.__._____    ____   _____|  |__  __ __ \   _  \   /  __  \ 
- |    |  \|  \  \/ <   |  |\__  \  /    \ /  ___/  |  \|  |  \/  /_\  \  >      < 
- |    `   \  |\   / \___  | / __ \|   |  \\___ \|   Y  \  |  /\  \_/   \/   --   \
-/_______  /__| \_/  / ____|(____  /___|  /____  >___|  /____/  \_____  /\______  /
-        \/          \/          \/     \/     \/     \/              \/        \/ 
+       _ _     _                 
+      | (_)   | |                
+      | |_ ___| |__  _ __  _   _ 
+  _   | | / __| '_ \| '_ \| | | |
+ | |__| | \__ \ | | | | | | |_| |
+  \____/|_|___/_| |_|_| |_|\__,_|
+EOF
+            ;;
+        "DATABASE SETUP")
+cat <<'EOF'
+  ____        _        _           _                 
+ |  _ \  __ _| |_ __ _| |__   __ _| |_ ___  ___  ___ 
+ | | | |/ _` | __/ _` | '_ \ / _` | __/ _ \/ __|/ _ \
+ | |_| | (_| | || (_| | |_) | (_| | ||  __/\__ \  __/
+ |____/ \__,_|\__\__,_|_.__/ \__,_|\__\___||___/\___|
+EOF
+            ;;
+        "MINECRAFT PLAYER MANAGER")
+cat <<'EOF'
+  __  __ _                   _             _             
+ |  \/  (_)_ __ ___  ___ ___(_)_ __   __ _| |_ ___  _ __ 
+ | |\/| | | '__/ _ \/ __/ __| | '_ \ / _` | __/ _ \| '__|
+ | |  | | | | |  __/\__ \__ \ | | | | (_| | || (_) | |   
+ |_|  |_|_|_|  \___||___/___/_|_| |_|\__,_|\__\___/|_|   
 EOF
             ;;
         *)
@@ -145,8 +163,8 @@ system_info() {
 show_menu() {
     clear
     print_header_rule
-    echo -e "${CYAN}           🚀 Ultimate Hosting Manager            ${NC}"
-    echo -e "${CYAN}                Made by Divyanshu08                 ${NC}"
+    echo -e "${CYAN}           🚀 JISHNU HOSTING MANAGER            ${NC}"
+    echo -e "${CYAN}              made by nobita , jishnu           ${NC}"
     print_header_rule
 
     big_header "MAIN MENU"
@@ -161,24 +179,26 @@ show_menu() {
     echo -e "${WHITE}${BOLD}  7)${NC} ${CYAN}${BOLD}Change Theme${NC}"
     echo -e "${WHITE}${BOLD}  8)${NC} ${CYAN}${BOLD}System Information${NC}"
     echo -e "${WHITE}${BOLD}  9)${NC} ${CYAN}${BOLD}Tailscale (install + up)${NC}"
+    echo -e "${WHITE}${BOLD} 10)${NC} ${CYAN}${BOLD}Database Setup${NC}"
+    echo -e "${WHITE}${BOLD} 11)${NC} ${CYAN}${BOLD}Blueprints extensions Setup${NC}"
     echo -e "${WHITE}${BOLD}  0)${NC} ${RED}${BOLD}Exit${NC}"
 
     print_header_rule
-    echo -e "${YELLOW}${BOLD}📝 Select an option [0-9]: ${NC}"
+    echo -e "${YELLOW}${BOLD}📝 Select an option [0-11]: ${NC}"
 }
 
-# Welcome animation with robust 'Divyanshu' ASCII via heredoc
+# Welcome animation
 welcome_animation() {
     clear
     print_header_rule
     echo -e "${CYAN}"
 cat <<'EOF'
-________  .__                                   .__           _______     ______  
-\______ \ |__|__  _____.__._____    ____   _____|  |__  __ __ \   _  \   /  __  \ 
- |    |  \|  \  \/ <   |  |\__  \  /    \ /  ___/  |  \|  |  \/  /_\  \  >      < 
- |    `   \  |\   / \___  | / __ \|   |  \\___ \|   Y  \  |  /\  \_/   \/   --   \
-/_______  /__| \_/  / ____|(____  /___|  /____  >___|  /____/  \_____  /\______  /
-        \/          \/          \/     \/     \/     \/              \/        \/ 
+       _ _     _                 
+      | (_)   | |                
+      | |_ ___| |__  _ __  _   _ 
+  _   | | / __| '_ \| '_ \| | | |
+ | |__| | \__ \ | | | | | | |_| |
+  \____/|_|___/_| |_|_| |_|\__,_|
 EOF
     echo -e "${NC}"
     echo -e "${CYAN}                   Hosting Manager${NC}"
@@ -210,7 +230,6 @@ while true; do
             print_header_rule
 
             check_curl
-
             if curl -fsSL https://tailscale.com/install.sh | sh; then
                 print_success "Tailscale installed successfully"
                 if command -v systemctl &>/dev/null; then
@@ -230,8 +249,71 @@ while true; do
             echo -e ""
             read -p "$(echo -e "${YELLOW}Press Enter to continue...${NC}")" -n 1
             ;;
+        10)
+            print_header_rule
+            big_header "DATABASE SETUP"
+            print_header_rule
+            echo -e "${CYAN}Running: ${BOLD}MySQL / MariaDB Database Setup${NC}"
+            print_header_rule
+
+            read -p "Enter new database username: " DB_USER
+            read -sp "Enter password for $DB_USER: " DB_PASS
+            echo ""
+            echo -e "${YELLOW}Creating database user '$DB_USER'...${NC}"
+
+            mysql -u root -p <<MYSQL_SCRIPT
+CREATE USER '${DB_USER}'@'%' IDENTIFIED BY '${DB_PASS}';
+GRANT ALL PRIVILEGES ON *.* TO '${DB_USER}'@'%' WITH GRANT OPTION;
+FLUSH PRIVILEGES;
+MYSQL_SCRIPT
+
+            CONF_FILE="/etc/mysql/mariadb.conf.d/50-server.cnf"
+            if [ -f "$CONF_FILE" ]; then
+                echo -e "${YELLOW}Updating bind-address in $CONF_FILE...${NC}"
+                sed -i 's/^bind-address.*/bind-address = 0.0.0.0/' "$CONF_FILE"
+            else
+                echo -e "${MAGENTA}⚠️  Config file not found: $CONF_FILE${NC}"
+            fi
+
+            echo -e "${YELLOW}Restarting MySQL and MariaDB services...${NC}"
+            systemctl restart mysql 2>/dev/null
+            systemctl restart mariadb 2>/dev/null
+
+            if command -v ufw &>/dev/null; then
+                ufw allow 3306/tcp >/dev/null 2>&1 && echo -e "${GREEN}Opened port 3306 for remote connections${NC}"
+            fi
+
+            echo -e "${GREEN}✅ Database user '$DB_USER' created and remote access enabled!${NC}"
+
+            echo -e ""
+            read -p "$(echo -e "${YELLOW}Press Enter to continue...${NC}")" -n 1
+            ;;
+        11)
+            print_header_rule
+            big_header "MINECRAFT PLAYER MANAGER"
+            print_header_rule
+            echo -e "${CYAN}Running: ${BOLD}Minecraft Player Manager Setup${NC}"
+            print_header_rule
+
+            check_curl
+
+            print_status "Downloading blueprints..."
+            cd /var/www/pterodactyl
+            wget -q https://github.com/NotJishnuisback/Free123/raw/refs/heads/main/minecraftplayermanager.blueprint
+            wget -q https://github.com/NotJishnuisback/Free123/raw/refs/heads/main/mcplugins.blueprint
+            print_success "Blueprints downloaded"
+
+            print_status "Installing mcplugins.blueprint..."
+            blueprint -i mcplugins.blueprint && print_success "mcplugins installed"
+
+            print_status "Installing minecraftplayermanager.blueprint..."
+            blueprint -i minecraftplayermanager.blueprint && print_success "Minecraft Player Manager installed"
+
+            echo -e ""
+            read -p "$(echo -e "${YELLOW}Press Enter to continue...${NC}")" -n 1
+            ;;
         0)
-            echo -e "${GREEN}Exiting Ultimate Hosting Manager...${NC}"
+            echo -e "${GREEN}Exiting Jishnu Hosting Manager...${NC}"
             print_header_rule
             echo -e "${CYAN}           Thank you for using our tools!       ${NC}"
             print_header_rule
@@ -239,7 +321,7 @@ while true; do
             exit 0
             ;;
         *)
-            print_error "Invalid option! Please choose between 0-9"
+            print_error "Invalid option! Please choose between 0-11"
             sleep 1.2
             ;;
     esac
