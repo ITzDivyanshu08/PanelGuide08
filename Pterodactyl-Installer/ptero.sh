@@ -32,22 +32,26 @@ EOF
             ;;
         "SYSTEM INFORMATION")
 cat <<'EOF'
-       _ _     _                 
-      | (_)   | |                
-      | |_ ___| |__  _ __  _   _ 
-  _   | | / __| '_ \| '_ \| | | |
- | |__| | \__ \ | | | | | | |_| |
-  \____/|_|___/_| |_|_| |_|\__,_|
+  _____  _                             _            ___   ___  
+ |  __ \(_)                           | |          / _ \ / _ \ 
+ | |  | |___   ___   _  __ _ _ __  ___| |__  _   _| | | | (_) |
+ | |  | | \ \ / / | | |/ _` | '_ \/ __| '_ \| | | | | | |> _ < 
+ | |__| | |\ V /| |_| | (_| | | | \__ \ | | | |_| | |_| | (_) |
+ |_____/|_| \_/  \__, |\__,_|_| |_|___/_| |_|\__,_|\___/ \___/ 
+                  __/ |                                        
+                 |___/                                         
 EOF
             ;;
         "WELCOME")
 cat <<'EOF'
-       _ _     _                 
-      | (_)   | |                
-      | |_ ___| |__  _ __  _   _ 
-  _   | | / __| '_ \| '_ \| | | |
- | |__| | \__ \ | | | | | | |_| |
-  \____/|_|___/_| |_|_| |_|\__,_|
+  _____  _                             _            ___   ___  
+ |  __ \(_)                           | |          / _ \ / _ \ 
+ | |  | |___   ___   _  __ _ _ __  ___| |__  _   _| | | | (_) |
+ | |  | | \ \ / / | | |/ _` | '_ \/ __| '_ \| | | | | | |> _ < 
+ | |__| | |\ V /| |_| | (_| | | | \__ \ | | | |_| | |_| | (_) |
+ |_____/|_| \_/  \__, |\__,_|_| |_|___/_| |_|\__,_|\___/ \___/ 
+                  __/ |                                        
+                 |___/                                         
 EOF
             ;;
         "DATABASE SETUP")
@@ -163,8 +167,8 @@ system_info() {
 show_menu() {
     clear
     print_header_rule
-    echo -e "${CYAN}           🚀 JISHNU HOSTING MANAGER            ${NC}"
-    echo -e "${CYAN}              made by nobita , jishnu           ${NC}"
+    echo -e "${CYAN}               🚀 ULTIMATE HOSTING MANAGER            ${NC}"
+    echo -e "${CYAN}              😉 Credit - JishnuYT And Nobita          ${NC}"
     print_header_rule
 
     big_header "MAIN MENU"
@@ -193,12 +197,14 @@ welcome_animation() {
     print_header_rule
     echo -e "${CYAN}"
 cat <<'EOF'
-       _ _     _                 
-      | (_)   | |                
-      | |_ ___| |__  _ __  _   _ 
-  _   | | / __| '_ \| '_ \| | | |
- | |__| | \__ \ | | | | | | |_| |
-  \____/|_|___/_| |_|_| |_|\__,_|
+  _____  _                             _            ___   ___  
+ |  __ \(_)                           | |          / _ \ / _ \ 
+ | |  | |___   ___   _  __ _ _ __  ___| |__  _   _| | | | (_) |
+ | |  | | \ \ / / | | |/ _` | '_ \/ __| '_ \| | | | | | |> _ < 
+ | |__| | |\ V /| |_| | (_| | | | \__ \ | | | |_| | |_| | (_) |
+ |_____/|_| \_/  \__, |\__,_|_| |_|___/_| |_|\__,_|\___/ \___/ 
+                  __/ |                                        
+                 |___/                                         
 EOF
     echo -e "${NC}"
     echo -e "${CYAN}                   Hosting Manager${NC}"
@@ -313,7 +319,7 @@ MYSQL_SCRIPT
             read -p "$(echo -e "${YELLOW}Press Enter to continue...${NC}")" -n 1
             ;;
         0)
-            echo -e "${GREEN}Exiting Jishnu Hosting Manager...${NC}"
+            echo -e "${GREEN}Exiting Ultimate Hosting Manager...${NC}"
             print_header_rule
             echo -e "${CYAN}           Thank you for using our tools!       ${NC}"
             print_header_rule
